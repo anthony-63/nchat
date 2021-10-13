@@ -16,7 +16,7 @@ var path = require('path');
 
 
 /* Config */
-var port = proccess.env.PORT;
+var port = proccess.env.PORT || 8080;
 var app = express();
 var server;
 
@@ -342,18 +342,8 @@ function readLine() {
     });
 }
 
-if(!config.ssl.use) {
-    var http = require('http');
-    server = http.createServer(app);
-} else {
-    var https = require('https');
-    var opt = {
-        key: fs.readFileSync(config.ssl.key),
-        cert: fs.readFileSync(config.ssl.cert)
-    };
-
-    server = https.createServer(opt, app);
-}
+var http = require('http');
+server = http.createServer(process.env.PORT || 8080);
 
 server.listen(port);
 server.on('error', onError);
